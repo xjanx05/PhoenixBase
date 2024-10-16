@@ -7,12 +7,12 @@ import lombok.experimental.Accessors;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+@Setter
+@Getter
+@Accessors(fluent = true, chain = true)
 public abstract class DatabaseRequest {
 
-    @Getter
-    @Accessors(fluent = true, chain = true)
-    @Setter
-    private boolean async;
+    private boolean async = false;
 
     public abstract Object execute(Connection connection) throws SQLException;
 

@@ -24,7 +24,7 @@ public class SelectRequest extends DatabaseRequest {
     private Set<Condition> conditions;
     private Set<String> columKey;
 
-    public SelectRequest addCondition(Condition condition) {
+    public SelectRequest condition(Condition condition) {
         if (conditions == null) {
             conditions = new HashSet<>();
         }
@@ -32,7 +32,7 @@ public class SelectRequest extends DatabaseRequest {
         return this;
     }
 
-    public SelectRequest addCondition(String key, Object value) {
+    public SelectRequest condition(String key, Object value) {
         if (conditions == null) {
             conditions = new HashSet<>();
         }
@@ -40,7 +40,7 @@ public class SelectRequest extends DatabaseRequest {
         return this;
     }
 
-    public SelectRequest addColumKey(String columKey) {
+    public SelectRequest columKey(String columKey) {
         if (this.columKey == null) {
             this.columKey = new HashSet<>();
         }
