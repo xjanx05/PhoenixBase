@@ -1,5 +1,6 @@
 package de.codingphoenix;
 
+import de.codingphoenix.phoenixbase.database.Condition;
 import de.codingphoenix.phoenixbase.database.DatabaseAdapter;
 import de.codingphoenix.phoenixbase.database.Order;
 import de.codingphoenix.phoenixbase.database.request.SelectRequest;
@@ -28,8 +29,9 @@ public class Main {
                     }
                     return null;
                 })
-                .order("playTime", Order.Direction.DESCENDING)
-                .selectFunction(SelectRequest.SelectFunction.AVERAGE)
+                .order("firstJoin", Order.Direction.DESCENDING)
+                .limit(3)
+                .condition("lastJoin", "1722944980260", Condition.Operator.GREATER_EQUALS_THAN)
                 .async(false);
         ;
 

@@ -3,6 +3,7 @@ package de.codingphoenix.phoenixbase.database.request;
 import de.codingphoenix.phoenixbase.check.Checks;
 import de.codingphoenix.phoenixbase.database.Condition;
 import de.codingphoenix.phoenixbase.database.DatabaseAction;
+import de.codingphoenix.phoenixbase.database.Limit;
 import de.codingphoenix.phoenixbase.database.Order;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,15 +20,24 @@ import java.util.Set;
 @Accessors(fluent = true)
 public class SelectRequest extends DatabaseRequest {
     @Setter
+    private String table;
+    @Setter
     private DatabaseAction databaseAction;
     @Setter
+    private SelectFunction selectFunction = SelectFunction.NORMAL;
+
     private Order order;
-    @Setter
-    private String table;
     private Set<Condition> conditions;
     private Set<String> columKey;
-    @Setter
-    private SelectFunction selectFunction = SelectFunction.NORMAL;
+    private Limit limit;
+
+    public SelectRequest limit(int limit) {
+        if (this.limit == null) {
+            this.limit = new Limit();
+        }
+        this.limit.limit(limit);
+        return this;
+    }
 
     public SelectRequest condition(Condition condition) {
         if (conditions == null) {
@@ -51,6 +61,13 @@ public class SelectRequest extends DatabaseRequest {
         conditions.add(new Condition(key, value));
         return this;
     }
+    public SelectRequest condition(String key, Object value, Condition.Operator operator) {
+        if (conditions == null) {
+            conditions = new HashSet<>();
+        }
+        conditions.add(new Condition(key, value, operator));
+        return this;
+    }
 
     public SelectRequest columKey(String columKey) {
         if (this.columKey == null) {
@@ -66,11 +83,31 @@ public class SelectRequest extends DatabaseRequest {
         Checks.checkIfNullOrEmptyMap(table, "tablename");
         Checks.checkIfNullOrEmptyMap(columKey, "columkey");
 
-        String sql = "SELECT " + (!selectFunction.equals(SelectFunction.NORMAL) && !isStarRequest() ?  selectFunction.function() + "(" + parseColumName() + ")" : parseColumName()) + " FROM " + table + (conditions != null && !conditions.isEmpty() ? " WHERE " + parseCondition() : "") + (order != null ? order.toString() : "");
+
+        StringBuilder sql = new StringBuilder("SELECT ");
+
+        if (!selectFunction.equals(SelectFunction.NORMAL) && !isStarRequest()) {
+            sql.append(selectFunction.function()).append("(").append(parseColumName()).append(")");
+        } else {
+            sql.append(parseColumName());
+        }
+
+        sql.append(" FROM ").append(table);
+
+        if (conditions != null && !conditions.isEmpty())
+            sql.append(" WHERE ").append(parseCondition());
+
+        if (order != null)
+            sql.append(order.toString());
+
+        if (limit != null)
+            sql.append(limit.toString());
+
 
         if (Checks.DEBUG)
             System.out.println("Executing: " + sql);
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
         ResultSet resultSet = preparedStatement.executeQuery();
         return databaseAction.databaseAction(resultSet);
     }
@@ -106,7 +143,7 @@ public class SelectRequest extends DatabaseRequest {
         if (conditions.isEmpty())
             return "";
         if (conditions.size() == 1)
-            return columKey.toArray(new String[]{})[0];
+            return conditions.toArray(new Condition[]{})[0].toString();
         StringBuilder parsedCondition = null;
         for (Condition condition : conditions) {
             if (parsedCondition == null) {
@@ -129,6 +166,4 @@ public class SelectRequest extends DatabaseRequest {
             this.function = funktion;
         }
     }
-
-    //TODO: LIMIT, WHERE <= OPERATORS
 }

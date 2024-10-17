@@ -13,6 +13,14 @@ public class Checks {
         }
     }
 
+    public static void checkIfHasSpaces(Object object, String name){
+        if(object instanceof String string && string.contains(" ")){
+            throw new NullPointerException("Object '" + name + "' has spaces");
+        }
+    }
+
+
+
     public static void checkIfNullOrEmptyMap(Object object, String name) {
         if (object == null) {
             throw new NullPointerException("Object '" + name + "' is null");
