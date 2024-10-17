@@ -18,6 +18,11 @@ public class Checks {
             throw new NullPointerException("Object '" + name + "' has spaces");
         }
     }
+    public static void checkIfNotNumber(Object object, String name){
+        if(!(object instanceof Number)){
+            throw new NullPointerException("Object '" + name + "' is not a number");
+        }
+    }
 
 
 

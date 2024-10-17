@@ -103,6 +103,7 @@ public class SelectRequest extends DatabaseRequest {
         if (limit != null)
             sql.append(limit.toString());
 
+        sql.append(";");
 
         if (Checks.DEBUG)
             System.out.println("Executing: " + sql);

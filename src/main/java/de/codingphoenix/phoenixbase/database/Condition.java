@@ -35,7 +35,9 @@ public class Condition {
 
         if (operator == Operator.EQUALS)
             return key + "='" + value + "'";
-        Checks.checkIfHasSpaces(value, "value");
+
+        Checks.checkIfNotNumber(value, "value");
+
         return key + " " + operator.operator() + " " + value;
     }
 
@@ -45,8 +47,7 @@ public class Condition {
     }
 
     public enum Operator {
-        EQUALS("="), SMALLER_THAN("<"), GREATER_THAN(">"), SMALLER_EQUALS_THAN("<="), GREATER_EQUALS_THAN(">="),
-        ;
+        EQUALS("="), SMALLER_THAN("<"), GREATER_THAN(">"), SMALLER_EQUALS_THAN("<="), GREATER_EQUALS_THAN(">="), NOT_EQUALS("<>");;
 
         @Getter
         @Accessors(fluent = true)
