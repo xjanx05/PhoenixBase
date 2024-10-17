@@ -129,4 +129,6 @@ public class SelectRequest extends DatabaseRequest {
             this.function = funktion;
         }
     }
+
+    //TODO: LIMIT, WHERE <= OPERATORS
 }
