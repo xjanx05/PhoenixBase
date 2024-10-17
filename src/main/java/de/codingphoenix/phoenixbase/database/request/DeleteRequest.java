@@ -73,10 +73,10 @@ public class DeleteRequest extends DatabaseRequest {
             sql.append(" WHERE ").append(parseCondition());
 
         if (order != null)
-            sql.append(order.toString());
+            sql.append(order);
 
         if (limit != null)
-            sql.append(limit.toString());
+            sql.append(limit);
 
         sql.append(";");
         if (Checks.DEBUG)
@@ -94,10 +94,10 @@ public class DeleteRequest extends DatabaseRequest {
         StringBuilder parsedCondition = null;
         for (Condition condition : conditions) {
             if (parsedCondition == null) {
-                parsedCondition = new StringBuilder(condition.not() ? " NOT " : "").append(condition.toString());
+                parsedCondition = new StringBuilder(condition.not() ? " NOT " : "").append(condition);
                 continue;
             }
-            parsedCondition.append(condition.type().equals(Condition.Type.AND) ? " AND " : " OR ").append(condition.toString());
+            parsedCondition.append(condition.type().equals(Condition.Type.AND) ? " AND " : " OR ").append(condition);
         }
         return parsedCondition.toString();
     }

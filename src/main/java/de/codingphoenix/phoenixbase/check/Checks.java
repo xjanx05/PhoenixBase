@@ -7,23 +7,23 @@ import java.util.Set;
 public class Checks {
     public static boolean DEBUG = true;
 
-    public static void checkIfNull(Object object, String name){
-        if(object == null){
+    public static void checkIfNull(Object object, String name) {
+        if (object == null) {
             throw new NullPointerException("Object '" + name + "' is null");
         }
     }
 
-    public static void checkIfHasSpaces(Object object, String name){
-        if(object instanceof String string && string.contains(" ")){
+    public static void checkIfHasSpaces(Object object, String name) {
+        if (object instanceof String string && string.contains(" ")) {
             throw new NullPointerException("Object '" + name + "' has spaces");
         }
     }
-    public static void checkIfNotNumber(Object object, String name){
-        if(!(object instanceof Number)){
+
+    public static void checkIfNotNumber(Object object, String name) {
+        if (!(object instanceof Number)) {
             throw new NullPointerException("Object '" + name + "' is not a number");
         }
     }
-
 
 
     public static void checkIfNullOrEmptyMap(Object object, String name) {

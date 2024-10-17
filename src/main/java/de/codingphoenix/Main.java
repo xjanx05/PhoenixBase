@@ -1,6 +1,5 @@
 package de.codingphoenix;
 
-import de.codingphoenix.phoenixbase.database.Condition;
 import de.codingphoenix.phoenixbase.database.DatabaseAdapter;
 import de.codingphoenix.phoenixbase.database.Order;
 import de.codingphoenix.phoenixbase.database.request.DatabaseRequest;
@@ -50,9 +49,12 @@ public class Main {
                 .async(false);
         ;
 
+
         databaseAdapter.executeRequest(insertRequest);
         databaseAdapter.executeRequest(selectRequest);
         databaseAdapter.executeRequest(deleteRequest);
         databaseAdapter.executeRequest(selectRequest);
+
+        //FINISHED: DELETE, SELECT, INSERT, TABLE DROP,
     }
 }

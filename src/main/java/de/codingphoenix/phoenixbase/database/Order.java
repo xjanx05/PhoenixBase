@@ -13,7 +13,7 @@ public class Order {
     private HashMap<String, Direction> orderRules;
 
     public Order orderRule(String key, Direction direction) {
-        if(orderRules == null)
+        if (orderRules == null)
             orderRules = new HashMap<>();
         orderRules.put(key, direction);
         return this;

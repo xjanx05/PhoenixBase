@@ -47,7 +47,7 @@ public class Condition {
     }
 
     public enum Operator {
-        EQUALS("="), SMALLER_THAN("<"), GREATER_THAN(">"), SMALLER_EQUALS_THAN("<="), GREATER_EQUALS_THAN(">="), NOT_EQUALS("<>");;
+        EQUALS("="), SMALLER_THAN("<"), GREATER_THAN(">"), SMALLER_EQUALS_THAN("<="), GREATER_EQUALS_THAN(">="), NOT_EQUALS("<>");
 
         @Getter
         @Accessors(fluent = true)

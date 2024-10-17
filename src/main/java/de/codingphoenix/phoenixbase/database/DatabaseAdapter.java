@@ -61,14 +61,14 @@ public class DatabaseAdapter {
             CompletableFuture.runAsync(() -> {
                 try {
                     if (Checks.DEBUG)
-                        System.out.println("Executing '%s' async".formatted(request.getClass().getSimpleName()));
+                        System.out.printf("Executing '%s' async%n", request.getClass().getSimpleName());
                     try (Connection connection = dataSource.getConnection()) {
                         request.execute(connection);
                     } catch (Exception e) {
                         throw new RequestNotExecutableException(e);
                     }
                     if (Checks.DEBUG)
-                        System.out.println("Executed '%s'".formatted(request.getClass().getSimpleName()));
+                        System.out.printf("Executed '%s'%n", request.getClass().getSimpleName());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -76,7 +76,7 @@ public class DatabaseAdapter {
             return null;
         } else {
             if (Checks.DEBUG)
-                System.out.println("Executing '%s' synced".formatted(request.getClass().getSimpleName()));
+                System.out.printf("Executing '%s' synced%n", request.getClass().getSimpleName());
             try (Connection connection = dataSource.getConnection()) {
                 return request.execute(connection);
             } catch (SQLException e) {
