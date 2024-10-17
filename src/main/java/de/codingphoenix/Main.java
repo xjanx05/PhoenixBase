@@ -1,5 +1,6 @@
 package de.codingphoenix;
 
+import de.codingphoenix.phoenixbase.database.Condition;
 import de.codingphoenix.phoenixbase.database.DatabaseAdapter;
 import de.codingphoenix.phoenixbase.database.Order;
 import de.codingphoenix.phoenixbase.database.request.DatabaseRequest;
@@ -7,7 +8,6 @@ import de.codingphoenix.phoenixbase.database.request.DeleteRequest;
 import de.codingphoenix.phoenixbase.database.request.InsertRequest;
 import de.codingphoenix.phoenixbase.database.request.SelectRequest;
 
-import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
@@ -46,7 +46,7 @@ public class Main {
 
         DatabaseRequest deleteRequest = new DeleteRequest()
                 .table("player")
-                .condition("uuid", "77031033-c9f0-4ed2-b8f6-8460bbc41daa")
+                .condition("lastJoin", "1722929682503")
                 .async(false);
         ;
 
