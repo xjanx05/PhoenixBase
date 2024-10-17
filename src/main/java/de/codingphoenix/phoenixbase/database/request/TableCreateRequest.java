@@ -1,6 +1,7 @@
 package de.codingphoenix.phoenixbase.database.request;
 
-public class CreateTableRequest {
+public class TableCreateRequest {
 
+    //TODO
 
 }
