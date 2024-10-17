@@ -14,6 +14,7 @@ public class Condition {
     private String key;
     private Object value;
     private Type type = Type.AND;
+    private boolean not = false;
 
     public Condition(String key, Object value) {
         this.key = key;
@@ -27,6 +28,6 @@ public class Condition {
 
 
     public enum Type {
-        AND, OR
+        AND, OR,
     }
 }

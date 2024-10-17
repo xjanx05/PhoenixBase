@@ -3,6 +3,7 @@ package de.codingphoenix.phoenixbase.database.request;
 import de.codingphoenix.phoenixbase.check.Checks;
 import de.codingphoenix.phoenixbase.database.Condition;
 import de.codingphoenix.phoenixbase.database.DatabaseAction;
+import de.codingphoenix.phoenixbase.database.Order;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -20,15 +21,26 @@ public class SelectRequest extends DatabaseRequest {
     @Setter
     private DatabaseAction databaseAction;
     @Setter
+    private Order order;
+    @Setter
     private String table;
     private Set<Condition> conditions;
     private Set<String> columKey;
+    @Setter
+    private SelectFunction selectFunction = SelectFunction.NORMAL;
 
     public SelectRequest condition(Condition condition) {
         if (conditions == null) {
             conditions = new HashSet<>();
         }
         conditions.add(condition);
+        return this;
+    }
+
+    public SelectRequest order(String key, Order.Direction direction) {
+        if (order == null)
+            order = new Order();
+        order.orderRule(key, direction);
         return this;
     }
 
@@ -54,12 +66,24 @@ public class SelectRequest extends DatabaseRequest {
         Checks.checkIfNullOrEmptyMap(table, "tablename");
         Checks.checkIfNullOrEmptyMap(columKey, "columkey");
 
-        String sql = "SELECT " + parseColumName() + " FROM " + table + (!conditions.isEmpty() ? " WHERE 1=1 AND " + parseCondition() : "");
+        String sql = "SELECT " + (!selectFunction.equals(SelectFunction.NORMAL) && !isStarRequest() ?  selectFunction.function() + "(" + parseColumName() + ")" : parseColumName()) + " FROM " + table + (conditions != null && !conditions.isEmpty() ? " WHERE " + parseCondition() : "") + (order != null ? order.toString() : "");
+
         if (Checks.DEBUG)
             System.out.println("Executing: " + sql);
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
         return databaseAction.databaseAction(resultSet);
+    }
+
+    private boolean isStarRequest() {
+        if (columKey == null || columKey.size() != 1)
+            return false;
+        if (!columKey.toArray(new String[]{})[0].equals("*")) {
+            return false;
+        }
+        if (Checks.DEBUG)
+            System.out.println("The request was a star request");
+        return true;
     }
 
     private String parseColumName() {
@@ -86,11 +110,23 @@ public class SelectRequest extends DatabaseRequest {
         StringBuilder parsedCondition = null;
         for (Condition condition : conditions) {
             if (parsedCondition == null) {
-                parsedCondition = new StringBuilder(condition.toString());
+                parsedCondition = new StringBuilder(condition.not() ? " NOT " : "").append(condition.toString());
                 continue;
             }
             parsedCondition.append(condition.type().equals(Condition.Type.AND) ? " AND " : " OR ").append(condition.toString());
         }
         return parsedCondition.toString();
+    }
+
+    public enum SelectFunction {
+        NORMAL(""), COUNT("COUNT"), AVERAGE("AVG"), SUM("SUM");
+
+        @Getter
+        @Accessors(fluent = true)
+        private final String function;
+
+        SelectFunction(String funktion) {
+            this.function = funktion;
+        }
     }
 }

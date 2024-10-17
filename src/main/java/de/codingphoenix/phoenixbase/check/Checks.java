@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Checks {
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
 
     public static void checkIfNull(Object object, String name){
         if(object == null){

@@ -1,6 +1,7 @@
 package de.codingphoenix;
 
 import de.codingphoenix.phoenixbase.database.DatabaseAdapter;
+import de.codingphoenix.phoenixbase.database.Order;
 import de.codingphoenix.phoenixbase.database.request.SelectRequest;
 
 public class Main {
@@ -19,18 +20,16 @@ public class Main {
         SelectRequest selectRequest = new SelectRequest();
         selectRequest
                 .table("player")
-                .condition("uuid", "0e3749e5-4bc7-4c42-b026-35ee38c900ff")
-                .condition("firstJoin", "1722943846322")
                 .columKey("*")
                 .databaseAction(resultSet -> {
                     System.out.println("The Result is: ");
-                    if (resultSet.next()) {
-                        System.out.println(resultSet.getString("playTime"));
-                    } else {
-                        System.out.println("No Result found");
+                    while (resultSet.next()) {
+                        System.out.println(resultSet.getString(1));
                     }
                     return null;
                 })
+                .order("playTime", Order.Direction.DESCENDING)
+                .selectFunction(SelectRequest.SelectFunction.AVERAGE)
                 .async(false);
         ;
 
