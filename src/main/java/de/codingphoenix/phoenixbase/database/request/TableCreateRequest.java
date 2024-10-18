@@ -71,16 +71,4 @@ public class TableCreateRequest extends DatabaseRequest {
         preparedStatement.execute();
     }
 
-
-    //TODO
-
-    //CREATE TABLE               table_name (column1 datatype,column2 datatype,column3 datatyp);
-    //CREATE TABLE               table_name (column1 varchar(53) PRIMARY KEY AUTOINCREMENT,column2 varchar(53) PRIMARY KEY, column3 varchar(53))
-    //CREATE TABLE               table_name (column1 datatype PRIMARY KEY AUTOINCREMENT,column2 datatype,column3 datatype);
-    //CREATE TABLE               table_name (column1 datatype DEFAULT default_value, column2 datatype, column3 datatype);
-    //CREATE TABLE               table_name (column1 datatype, column2 datatype UNIQUE, column3 datatype);
-
-    //CREATE TABLE IF NOT EXISTS table_name (column1 datatype,column2 datatype,column3 datatyp);
-
-
 }
