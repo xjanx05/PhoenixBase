@@ -1,10 +1,12 @@
 package de.codingphoenix;
 
 import de.codingphoenix.phoenixbase.database.Column;
+import de.codingphoenix.phoenixbase.database.Condition;
 import de.codingphoenix.phoenixbase.database.DataType;
 import de.codingphoenix.phoenixbase.database.DatabaseAdapter;
 import de.codingphoenix.phoenixbase.database.request.DatabaseRequest;
 import de.codingphoenix.phoenixbase.database.request.TableCreateRequest;
+import de.codingphoenix.phoenixbase.database.request.UpdateRequest;
 
 
 public class Main {
@@ -20,17 +22,8 @@ public class Main {
                 .build()
                 .connect();
 
-        DatabaseRequest tableCreateRequest = new TableCreateRequest()
-                .table("testing")
-                .ifNotExists(true)
-                .column(new Column().key("uuid").dataType(DataType.VARCHAR).dataTypeParamenterObject(64).columnType(Column.ColumnType.PRIMARY_KEY))
-                .column(new Column().key("playerName").dataType(DataType.VARCHAR).dataTypeParamenterObject(16).columnType(Column.ColumnType.UNIQUE))
-                .column(new Column().key("boolean").dataType(DataType.BOOLEAN).notNull(true))
-                .async(false);
+        //databaseAdapter.executeRequest();
 
-
-        databaseAdapter.executeRequest(tableCreateRequest);
-
-        //FINISHED: DELETE, SELECT, INSERT, TABLE DROP, TABLE CREATE
+        //FINISHED: DELETE, INSERT, SELECT, TABLE CREATE, TABLE DROP, UPDATE
     }
 }

@@ -74,15 +74,15 @@ public class InsertRequest extends DatabaseRequest {
     private StringBuilder generateOnDuplicateString() {
         StringBuilder sql = new StringBuilder(" ON DUPLICATE KEY UPDATE ");
 
-        StringBuilder updateString = null;
+        StringBuilder insertString = null;
         for (DatabaseEntry entry : entries) {
-            if (updateString == null) {
-                updateString = new StringBuilder(entry.columName()).append(" = ").append(entry.sqlValue());
+            if (insertString == null) {
+                insertString = new StringBuilder(entry.columName()).append(" = ").append(entry.sqlValue());
             } else {
-                updateString.append(", ").append(entry.columName()).append(" = ").append(entry.sqlValue());
+                insertString.append(", ").append(entry.columName()).append(" = ").append(entry.sqlValue());
             }
         }
-        return sql.append(updateString);
+        return sql.append(insertString);
     }
 
     public enum InsertMethode {

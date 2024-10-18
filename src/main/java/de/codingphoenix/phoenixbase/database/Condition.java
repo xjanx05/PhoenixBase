@@ -9,7 +9,6 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true, fluent = true)
-@NoArgsConstructor
 public class Condition {
     private String key;
     private Object value;
