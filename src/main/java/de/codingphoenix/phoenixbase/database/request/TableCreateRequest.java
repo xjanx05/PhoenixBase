@@ -1,14 +1,86 @@
 package de.codingphoenix.phoenixbase.database.request;
 
-public class TableCreateRequest {
+import de.codingphoenix.phoenixbase.check.Checks;
+import de.codingphoenix.phoenixbase.database.Column;
+import de.codingphoenix.phoenixbase.database.DataType;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Accessors(fluent = true)
+public class TableCreateRequest extends DatabaseRequest {
+    @Setter
+    private String table;
+
+    @Setter
+    private boolean ifNotExists;
+
+    private List<Column> columns;
+
+    public TableCreateRequest column(Column column) {
+        if (columns == null) {
+            columns = new ArrayList<>();
+        }
+        columns.add(column);
+        return this;
+    }
+
+    public TableCreateRequest column(String key, DataType dataType) {
+        if (columns == null) {
+            columns = new ArrayList<>();
+        }
+        columns.add(new Column(key, dataType));
+        return this;
+    }
+
+
+    @Override
+    public void execute(Connection connection) throws SQLException {
+        Checks.checkIfNullOrEmptyMap(table, "tablename");
+        Checks.checkIfNullOrEmptyMap(columns, "columns");
+        StringBuilder sql = new StringBuilder("CREATE TABLE ");
+
+        if (ifNotExists)
+            sql.append("IF NOT EXISTS ");
+
+        sql.append(table);
+
+
+        StringBuilder columnString = null;
+        for (Column column : columns) {
+            if (columnString == null) {
+                columnString = new StringBuilder("(").append(column.toString());
+            } else {
+                columnString.append(", ").append(column.toString());
+            }
+        }
+        columnString.append(")");
+        sql.append(columnString).append(";");
+
+        if (Checks.DEBUG)
+            System.out.println("Executing: " + sql);
+
+        PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
+        preparedStatement.execute();
+    }
+
 
     //TODO
 
     //CREATE TABLE               table_name (column1 datatype,column2 datatype,column3 datatyp);
-    //CREATE TABLE               table_name (column1 datatype,column2 datatype,column3 datatype,PRIMARY KEY (column1, column2));
-    //CREATE TABLE               table_name (column1 datatype AUTO_INCREMENT PRIMARY KEY,column2 datatype,column3 datatype);
+    //CREATE TABLE               table_name (column1 varchar(53) PRIMARY KEY AUTOINCREMENT,column2 varchar(53) PRIMARY KEY, column3 varchar(53))
+    //CREATE TABLE               table_name (column1 datatype PRIMARY KEY AUTOINCREMENT,column2 datatype,column3 datatype);
     //CREATE TABLE               table_name (column1 datatype DEFAULT default_value, column2 datatype, column3 datatype);
     //CREATE TABLE               table_name (column1 datatype, column2 datatype UNIQUE, column3 datatype);
+
     //CREATE TABLE IF NOT EXISTS table_name (column1 datatype,column2 datatype,column3 datatyp);
+
 
 }

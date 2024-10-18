@@ -1,15 +1,15 @@
 package de.codingphoenix;
 
+import de.codingphoenix.phoenixbase.database.Column;
+import de.codingphoenix.phoenixbase.database.DataType;
 import de.codingphoenix.phoenixbase.database.DatabaseAdapter;
-import de.codingphoenix.phoenixbase.database.Order;
 import de.codingphoenix.phoenixbase.database.request.DatabaseRequest;
-import de.codingphoenix.phoenixbase.database.request.DeleteRequest;
-import de.codingphoenix.phoenixbase.database.request.InsertRequest;
-import de.codingphoenix.phoenixbase.database.request.SelectRequest;
+import de.codingphoenix.phoenixbase.database.request.TableCreateRequest;
 
 
 public class Main {
     public static void main(String[] args) {
+
         DatabaseAdapter databaseAdapter = new DatabaseAdapter.Builder()
                 .driverType(DatabaseAdapter.DriverType.MARIADB)
                 .host("localhost")
@@ -17,44 +17,20 @@ public class Main {
                 .database("atirion")
                 .user("root")
                 .password("root")
-                .build();
+                .build()
+                .connect();
 
-        databaseAdapter.connect();
-
-
-        DatabaseRequest insertRequest = new InsertRequest()
-                .table("player")
-                .entry("uuid", "c2330a58-126d-4fd3-8b7c-5f8a3577da9b")
-                .entry("playtime", 42)
-                .insertMethode(InsertRequest.InsertMethode.INSERT_IGNORE)
+        DatabaseRequest tableCreateRequest = new TableCreateRequest()
+                .table("testing")
+                .ifNotExists(true)
+                .column(new Column().key("uuid").dataType(DataType.VARCHAR).dataTypeParamenterObject(64).columnType(Column.ColumnType.PRIMARY_KEY))
+                .column(new Column().key("playerName").dataType(DataType.VARCHAR).dataTypeParamenterObject(16).columnType(Column.ColumnType.UNIQUE))
+                .column(new Column().key("boolean").dataType(DataType.BOOLEAN).notNull(true))
                 .async(false);
 
 
-        DatabaseRequest selectRequest = new SelectRequest()
-                .table("player")
-                .columKey("*")
-                .order("firstJoin", Order.Direction.DESCENDING)
-                .databaseAction(resultSet -> {
-                    System.out.println("The Result is: ");
-                    while (resultSet.next()) {
-                        System.out.println(resultSet.getString(1));
-                    }
-                    return null;
-                })
-                .async(false);
+        databaseAdapter.executeRequest(tableCreateRequest);
 
-        DatabaseRequest deleteRequest = new DeleteRequest()
-                .table("player")
-                .condition("lastJoin", "1722929682503")
-                .async(false);
-        ;
-
-
-        databaseAdapter.executeRequest(insertRequest);
-        databaseAdapter.executeRequest(selectRequest);
-        databaseAdapter.executeRequest(deleteRequest);
-        databaseAdapter.executeRequest(selectRequest);
-
-        //FINISHED: DELETE, SELECT, INSERT, TABLE DROP,
+        //FINISHED: DELETE, SELECT, INSERT, TABLE DROP, TABLE CREATE
     }
 }

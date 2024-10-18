@@ -43,7 +43,7 @@ public class DatabaseAdapter {
     }
 
 
-    public void connect() {
+    public DatabaseAdapter connect() {
         System.out.println("Loading driver class: " + driverType.driver());
         try {
             Class.forName(driverType.driver());
@@ -53,10 +53,11 @@ public class DatabaseAdapter {
         if (Checks.DEBUG)
             System.out.println("Starting database connection with credentials: '" + this.user + "': '" + this.password + "'");
         this.dataSource = new HikariDataSource(this.hikariConfig);
+        return this;
     }
 
 
-    public Object executeRequest(DatabaseRequest request) {
+    public void executeRequest(DatabaseRequest request) {
         if (request.async()) {
             CompletableFuture.runAsync(() -> {
                 try {
@@ -73,12 +74,13 @@ public class DatabaseAdapter {
                     e.printStackTrace();
                 }
             });
-            return null;
+            return;
         } else {
             if (Checks.DEBUG)
                 System.out.printf("Executing '%s' synced%n", request.getClass().getSimpleName());
             try (Connection connection = dataSource.getConnection()) {
-                return request.execute(connection);
+                request.execute(connection);
+                return;
             } catch (SQLException e) {
                 throw new RequestNotExecutableException(e);
             }

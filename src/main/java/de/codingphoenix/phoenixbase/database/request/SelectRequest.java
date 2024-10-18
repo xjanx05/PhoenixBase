@@ -79,7 +79,7 @@ public class SelectRequest extends DatabaseRequest {
     }
 
     @Override
-    public Object execute(Connection connection) throws SQLException {
+    public void execute(Connection connection) throws SQLException {
         Checks.checkIfNullOrEmptyMap(databaseAction, "action");
         Checks.checkIfNullOrEmptyMap(table, "tablename");
         Checks.checkIfNullOrEmptyMap(columKey, "columkey");
@@ -88,9 +88,9 @@ public class SelectRequest extends DatabaseRequest {
         StringBuilder sql = new StringBuilder("SELECT ");
 
         if (!selectFunction.equals(SelectFunction.NORMAL) && !isStarRequest()) {
-            sql.append(selectFunction.function()).append("(").append(parseColumName()).append(")");
+            sql.append(selectFunction.function()).append("(").append(parseColumnName()).append(")");
         } else {
-            sql.append(parseColumName());
+            sql.append(parseColumnName());
         }
 
         sql.append(" FROM ").append(table);
@@ -111,7 +111,7 @@ public class SelectRequest extends DatabaseRequest {
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
         ResultSet resultSet = preparedStatement.executeQuery();
-        return databaseAction.databaseAction(resultSet);
+        databaseAction.databaseAction(resultSet);
     }
 
     private boolean isStarRequest() {
@@ -125,7 +125,7 @@ public class SelectRequest extends DatabaseRequest {
         return true;
     }
 
-    private String parseColumName() {
+    private String parseColumnName() {
         if (columKey.isEmpty())
             return "";
         if (columKey.size() == 1)

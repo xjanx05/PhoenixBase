@@ -63,7 +63,7 @@ public class DeleteRequest extends DatabaseRequest {
     }
 
     @Override
-    public Object execute(Connection connection) throws SQLException {
+    public void execute(Connection connection) throws SQLException {
         Checks.checkIfNullOrEmptyMap(table, "tablename");
 
         StringBuilder sql = new StringBuilder("DELETE FROM ").append(table);
@@ -83,7 +83,7 @@ public class DeleteRequest extends DatabaseRequest {
             System.out.println("Executing: " + sql);
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
-        return preparedStatement.execute();
+        preparedStatement.execute();
     }
 
     private String parseCondition() {

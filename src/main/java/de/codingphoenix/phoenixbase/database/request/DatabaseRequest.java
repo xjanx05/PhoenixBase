@@ -14,6 +14,6 @@ public abstract class DatabaseRequest {
 
     private boolean async = false;
 
-    public abstract Object execute(Connection connection) throws SQLException;
+    public abstract void execute(Connection connection) throws SQLException;
 
 }

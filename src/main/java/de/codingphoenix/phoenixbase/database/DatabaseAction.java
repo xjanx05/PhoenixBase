@@ -5,6 +5,6 @@ import java.sql.SQLException;
 
 public interface DatabaseAction {
 
-    Object databaseAction(ResultSet resultSet) throws SQLException;
+    void databaseAction(ResultSet resultSet) throws SQLException;
 
 }
