@@ -1,12 +1,6 @@
 package de.codingphoenix;
 
-import de.codingphoenix.phoenixbase.database.Column;
-import de.codingphoenix.phoenixbase.database.Condition;
-import de.codingphoenix.phoenixbase.database.DataType;
 import de.codingphoenix.phoenixbase.database.DatabaseAdapter;
-import de.codingphoenix.phoenixbase.database.request.DatabaseRequest;
-import de.codingphoenix.phoenixbase.database.request.TableCreateRequest;
-import de.codingphoenix.phoenixbase.database.request.UpdateRequest;
 
 
 public class Main {
