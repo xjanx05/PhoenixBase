@@ -1,6 +1,11 @@
 package de.codingphoenix;
 
+import de.codingphoenix.phoenixbase.database.DataType;
 import de.codingphoenix.phoenixbase.database.DatabaseAdapter;
+import de.codingphoenix.phoenixbase.database.request.DatabaseRequest;
+import de.codingphoenix.phoenixbase.database.request.tablealter.TableAlterRequest;
+import de.codingphoenix.phoenixbase.database.request.tablealter.action.TableAlterModifyTypeAction;
+import de.codingphoenix.phoenixbase.database.request.tablealter.action.TableAlterRenameAction;
 
 
 public class Main {
@@ -16,7 +21,13 @@ public class Main {
                 .build()
                 .connect();
 
-        //databaseAdapter.executeRequest();
+
+        DatabaseRequest request = new TableAlterRequest()
+                .table("testing")
+                .alterRequestAction(new TableAlterModifyTypeAction().columnName("boolean").dataType(DataType.BOOLEAN))
+                .async(false);
+
+        databaseAdapter.executeRequest(request);
 
         //FINISHED: DELETE, INSERT, SELECT, TABLE CREATE, TABLE DROP, UPDATE
     }

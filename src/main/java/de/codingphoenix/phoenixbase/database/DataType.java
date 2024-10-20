@@ -101,4 +101,7 @@ public class DataType {
         return name;
     }
 
+    public StringBuilder toSQL(Object value){
+        return new StringBuilder().append(name).append(canHaveObject() && value != null ? "(" + value + ")" : "");
+    }
 }

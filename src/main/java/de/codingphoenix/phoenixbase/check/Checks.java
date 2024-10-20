@@ -39,4 +39,7 @@ public class Checks {
     }
 
 
+    public static void checkIfIntMinValue(int integer, String name) {
+        throw new NullPointerException("Integer '" + name + "' was not set.");
+    }
 }

@@ -31,7 +31,7 @@ public class Column {
     public String toString() {
         Checks.checkIfNull(key, "columnkey");
         Checks.checkIfNull(dataType, "datatype");
-        StringBuilder column = new StringBuilder(key).append(" ").append(dataType.toString() + (dataType.canHaveObject() && dataTypeParamenterObject != null ? "(" + dataTypeParamenterObject.toString() + ")" : ""));
+        StringBuilder column = new StringBuilder(key).append(" ").append(dataType.toSQL(dataTypeParamenterObject));
 
         if (notNull) {
             column.append(" NOT NULL");
@@ -58,8 +58,6 @@ public class Column {
     public enum ColumnType {
         PRIMARY_KEY, PRIMARY_KEY_AUTOINCREMENT, UNIQUE;
     }
-
-
 
 
 }
