@@ -6,7 +6,9 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
 name: Java CI with Gradle
-
+permissions:
+  contents: write  
+  packages: write 
 on:
   push:
     branches: [ "master" ]
@@ -40,14 +42,14 @@ jobs:
       id: get_version
       run: |
         VERSION=$(./gradlew -q printVersion)
-        echo "::set-output name=version::$VERSION"
+        echo "name=version::$VERSION" >> $GITHUB_OUTPUT
         
     - name: Create Release
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: v${{ steps.get_version.outputs.version }}
-        release_name: Release v${{ steps.get_version.outputs.version }}
+        name: Release v${{ steps.get_version.outputs.version }}
         draft: true
         prerelease: false
       env:
