@@ -57,7 +57,10 @@ public class Main {
                 .build()
                 .connect();
 
-        // Weitere Datenbankoperationen...
+        //Erstellen der Request ...
+
+        //Senden der Request
+        databaseAdapter.executeRequest(request);databaseAdapter.executeRequest(request);
     }
 }
 ```
