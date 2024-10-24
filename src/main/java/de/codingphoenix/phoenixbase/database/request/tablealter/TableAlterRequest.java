@@ -10,13 +10,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * A {@link DatabaseRequest} that will modify the table or its columns.
+ */
+@Setter
 @Getter
 @Accessors(fluent = true)
 public class TableAlterRequest extends DatabaseRequest {
 
-    @Setter
+    /**
+     * The name of the table that will be modified.
+     */
     private String table;
-    @Setter
+
+    /**
+     * The action of the request.
+     */
     private AlterRequestAction alterRequestAction;
 
     @Override
@@ -33,10 +42,11 @@ public class TableAlterRequest extends DatabaseRequest {
         if (Checks.DEBUG)
             System.out.println("Executing: " + sql);
 
-        PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
-        preparedStatement.execute();
     }
 
+    /**
+     * The interface of an Action for the {@link TableAlterRequest}.
+     */
     public interface AlterRequestAction {
 
         StringBuilder generateSQL();

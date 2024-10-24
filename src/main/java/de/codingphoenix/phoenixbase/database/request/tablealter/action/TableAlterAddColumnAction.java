@@ -7,14 +7,28 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-
+/**
+ Action for the {@link TableAlterRequest} that will add a column.
+ */
 @Setter
 @Getter
 @Accessors(fluent = true)
 public class TableAlterAddColumnAction implements TableAlterRequest.AlterRequestAction {
+    /**
+     * The name of the column the attribute should be added.
+     */
     private String columnName;
+    /**
+     * The Type of the data.
+     */
     private DataType dataType;
+    /**
+     * The position of the column.
+     */
     private Postion postion = Postion.DEFAULT;
+    /**
+     * If {@link Postion} is set to {@linkplain Postion.AFTER} the name of the column the new will be added after.
+     */
     private String afterColumnName;
 
     @Override
@@ -36,7 +50,9 @@ public class TableAlterAddColumnAction implements TableAlterRequest.AlterRequest
         return stringBuilder;
     }
 
-
+    /**
+     * The type of position where the column will be added.
+     */
     public enum Postion {
         DEFAULT, FIRST, AFTER
     }

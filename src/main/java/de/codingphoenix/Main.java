@@ -5,7 +5,6 @@ import de.codingphoenix.phoenixbase.database.DatabaseAdapter;
 import de.codingphoenix.phoenixbase.database.request.DatabaseRequest;
 import de.codingphoenix.phoenixbase.database.request.tablealter.TableAlterRequest;
 import de.codingphoenix.phoenixbase.database.request.tablealter.action.TableAlterModifyTypeAction;
-import de.codingphoenix.phoenixbase.database.request.tablealter.action.TableAlterRenameAction;
 
 
 public class Main {

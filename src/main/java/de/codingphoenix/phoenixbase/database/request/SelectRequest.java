@@ -18,19 +18,52 @@ import java.util.Set;
 
 @Getter
 @Accessors(fluent = true)
+/**
+ * A {@link DatabaseRequest} that selects certain values from a table.
+ */
 public class SelectRequest extends DatabaseRequest {
+
+    /**
+     * The name of the table that should be deleted.
+     */
     @Setter
     private String table;
+
+    /**
+     * The methode to which the result of the query will be parsed to.
+     */
     @Setter
     private DatabaseAction databaseAction;
+
+    /**
+     * The function for the select request. E.g. the amount of rows that will match the conditions.
+     */
     @Setter
     private SelectFunction selectFunction = SelectFunction.NORMAL;
 
+    /**
+     * The {@link Order} of the table when the deleting will occur.
+     */
     private Order order;
+    /**
+     * A list of conditions that must be matched in order to delete a row.
+     */
     private Set<Condition> conditions;
+    /**
+     * The key for the values that you want from the table.
+     */
     private Set<String> columKey;
+    /**
+     * The maximum of rows deleted by this request.
+     */
     private Limit limit;
 
+    /**
+     * Sets the limit of rows that should be selected by this request.
+     *
+     * @param limit The maximum rows that can be deleted.
+     * @return {@link SelectRequest} for chaining.
+     */
     public SelectRequest limit(int limit) {
         if (this.limit == null) {
             this.limit = new Limit();
@@ -39,6 +72,26 @@ public class SelectRequest extends DatabaseRequest {
         return this;
     }
 
+    /**
+     * Sets the {@link Order} of the table when the selection will occur
+     *
+     * @param key       The key of the column the order will be assigned on.
+     * @param direction The direction of the sorting.
+     * @return {@link SelectRequest} for chaining.
+     */
+    public SelectRequest order(String key, Order.Direction direction) {
+        if (order == null)
+            order = new Order();
+        order.orderRule(key, direction);
+        return this;
+    }
+
+    /**
+     * Adds and condition that a row must match in order to get selected.
+     *
+     * @param condition The condition
+     * @return {@link SelectRequest} for chaining.
+     */
     public SelectRequest condition(Condition condition) {
         if (conditions == null) {
             conditions = new HashSet<>();
@@ -47,13 +100,13 @@ public class SelectRequest extends DatabaseRequest {
         return this;
     }
 
-    public SelectRequest order(String key, Order.Direction direction) {
-        if (order == null)
-            order = new Order();
-        order.orderRule(key, direction);
-        return this;
-    }
-
+    /**
+     * Adds and condition that a row must match in order to get selected. By column key and value.
+     *
+     * @param key   The key of the column for the condition
+     * @param value The value of the row that must match with the given row key
+     * @return {@link SelectRequest} for chaining.
+     */
     public SelectRequest condition(String key, Object value) {
         if (conditions == null) {
             conditions = new HashSet<>();
@@ -62,6 +115,14 @@ public class SelectRequest extends DatabaseRequest {
         return this;
     }
 
+    /**
+     * Adds and condition that a row must match the operator in order to get selected. By column key, value and operator.
+     *
+     * @param key      The key of the column for the condition
+     * @param value    The value of the row that must match with the given row key
+     * @param operator The {@link de.codingphoenix.phoenixbase.database.Condition.Operator} of the request. E.g. if they need to match or be less than, ...
+     * @return {@link SelectRequest} for chaining.
+     */
     public SelectRequest condition(String key, Object value, Condition.Operator operator) {
         if (conditions == null) {
             conditions = new HashSet<>();
@@ -70,6 +131,11 @@ public class SelectRequest extends DatabaseRequest {
         return this;
     }
 
+    /**
+     * Adds a key for the values that you want from the table
+     * @param columKey The key of the column
+     * @return {@link SelectRequest} for chaining.
+     */
     public SelectRequest columKey(String columKey) {
         if (this.columKey == null) {
             this.columKey = new HashSet<>();
@@ -114,6 +180,11 @@ public class SelectRequest extends DatabaseRequest {
         databaseAction.databaseAction(resultSet);
     }
 
+    /**
+     * Checks if the request is a star request
+     *
+     * @return the result of the check
+     */
     private boolean isStarRequest() {
         if (columKey == null || columKey.size() != 1)
             return false;
@@ -125,6 +196,11 @@ public class SelectRequest extends DatabaseRequest {
         return true;
     }
 
+    /**
+     * Parsed the column names to a string for executing
+     *
+     * @return the sql string
+     */
     private String parseColumnName() {
         if (columKey.isEmpty())
             return "";
@@ -141,6 +217,11 @@ public class SelectRequest extends DatabaseRequest {
         return parsedName.toString();
     }
 
+    /**
+     * Parsed the conditions to a string for executing
+     *
+     * @return the sql string
+     */
     private String parseCondition() {
         if (conditions.isEmpty())
             return "";
@@ -158,8 +239,26 @@ public class SelectRequest extends DatabaseRequest {
     }
 
     public enum SelectFunction {
-        NORMAL(""), COUNT("COUNT"), AVERAGE("AVG"), SUM("SUM");
+        /**
+         * The default function. This will return the results directly.
+         */
+        NORMAL(""),
+        /**
+         * Counts the amount of rows that returns from the SELECT statement.
+         */
+        COUNT("COUNT"),
+        /**
+         * Calculates the average value of a numerical dataset that returns from the SELECT statement.
+         */
+        AVERAGE("AVG"),
+        /**
+         * Calculates the sum value of a numerical dataset that returns from the SELECT statement.
+         */
+        SUM("SUM");
 
+        /**
+         * The sql key for the function
+         */
         @Getter
         @Accessors(fluent = true)
         private final String function;

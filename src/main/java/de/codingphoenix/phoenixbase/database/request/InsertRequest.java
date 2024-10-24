@@ -13,16 +13,36 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A {@link DatabaseRequest} that requests an insert of a value in a table
+ */
 @Getter
 @Accessors(fluent = true)
 public class InsertRequest extends DatabaseRequest {
+
+    /**
+     * The name of the table that should be deleted.
+     */
     @Setter
     private String table;
+
+    /**
+     * The entries which will be written to the Database.
+     */
     private List<DatabaseEntry> entries;
+
+    /**
+     * Method which will be used for inserting the value.
+     */
     @Setter
     private InsertMethode insertMethode = InsertMethode.INSERT;
 
-
+    /**
+     * Adds an entry which will be written to the Database.
+     * @param column Name of the column
+     * @param value Value that will be inserted
+     * @return {@link InsertRequest} for chaining.
+     */
     public InsertRequest entry(String column, Object value) {
         if (entries == null) {
             entries = new ArrayList<>();
@@ -70,7 +90,10 @@ public class InsertRequest extends DatabaseRequest {
         preparedStatement.execute();
     }
 
-
+    /**
+     * Generates the sql string for insert with duplicated key for executing
+     * @return the sql string
+     */
     private StringBuilder generateOnDuplicateString() {
         StringBuilder sql = new StringBuilder(" ON DUPLICATE KEY UPDATE ");
 
@@ -85,6 +108,9 @@ public class InsertRequest extends DatabaseRequest {
         return sql.append(insertString);
     }
 
+    /**
+     * The methode of insert.
+     */
     public enum InsertMethode {
         INSERT, INSERT_OR_UPDATE, INSERT_IGNORE
     }

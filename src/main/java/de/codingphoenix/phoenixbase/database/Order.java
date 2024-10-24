@@ -12,6 +12,12 @@ import java.util.HashMap;
 public class Order {
     private HashMap<String, Direction> orderRules;
 
+    /**
+     *
+     * @param key
+     * @param direction
+     * @return
+     */
     public Order orderRule(String key, Direction direction) {
         if (orderRules == null)
             orderRules = new HashMap<>();
