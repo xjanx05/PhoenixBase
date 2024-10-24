@@ -60,7 +60,7 @@ public class Main {
         //Erstellen der Request ...
 
         //Senden der Request
-        databaseAdapter.executeRequest(request);databaseAdapter.executeRequest(request);
+        databaseAdapter.executeRequest(request);
     }
 }
 ```
