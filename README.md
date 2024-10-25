@@ -23,11 +23,18 @@ Diese Java-Bibliothek bietet eine benutzerfreundliche Schnittstelle zur einfache
 Fügen Sie die folgende Abhängigkeit in Ihre `pom.xml` ein:
 
 ```xml
-<dependency>
-    <groupId>com.example</groupId>
-    <artifactId>db-access-library</artifactId>
-    <version>1.0.0</version>
-</dependency>
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
+	<dependency>
+	    <groupId>com.github.xjanx05</groupId>
+	    <artifactId>PhoenixBase</artifactId>
+	    <version>Tag</version>
+	</dependency>
 ```
 
 ### Gradle
@@ -35,7 +42,12 @@ Fügen Sie die folgende Abhängigkeit in Ihre `pom.xml` ein:
 Fügen Sie die folgende Zeile in Ihre `build.gradle` ein:
 
 ```groovy
-implementation 'com.example:db-access-library:1.0.0'
+            repositories {
+			    mavenCentral()
+			    maven { url 'https://jitpack.io' }
+		    }
+
+	        implementation 'com.github.xjanx05:PhoenixBase:Tag'
 ```
 
 ## Nutzung
