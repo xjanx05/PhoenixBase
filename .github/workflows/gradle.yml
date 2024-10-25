@@ -56,7 +56,7 @@ jobs:
         draft: true
         prerelease: true
         files: |
-          build/libs/PhoenixBase.jar
+          build/libs/PhoenixBase-${{ steps.get_version.outputs.version }}.jar
           build-libs.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
