@@ -37,7 +37,10 @@ jobs:
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
-      
+
+    - name: Archive build folder
+      run: zip -r build-libs.zip build/libs/
+    
     - name: Get Version from Gradle
       id: get_version
       run: |
@@ -49,9 +52,12 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: v${{ steps.get_version.outputs.version }}
-        name: Release v${{ steps.get_version.outputs.version }}
+        name: Pre-Release v${{ steps.get_version.outputs.version }}
         draft: true
-        prerelease: false
+        prerelease: true
+        files: |
+          build/libs/PhoenixBase.jar
+          build-libs.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
