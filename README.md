@@ -1,5 +1,5 @@
 # Datenbank-Zugriffs-Bibliothek mit HikariCP
-
+[![](https://jitpack.io/v/xjanx05/PhoenixBase.svg)](https://jitpack.io/#xjanx05/PhoenixBase)
 ## Übersicht
 
 Diese Java-Bibliothek bietet eine benutzerfreundliche Schnittstelle zur einfachen Durchführung von Datenbankzugriffen. Durch die Integration von HikariCP als Connection Pooling-Mechanismus gewährleistet sie eine effiziente und performante Verbindung zu relationalen Datenbanken. Ziel ist es, Entwicklern die Interaktion mit Datenbanken zu erleichtern, indem häufige Aufgaben abstrahiert und optimiert werden.
