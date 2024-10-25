@@ -42,10 +42,10 @@ Fügen Sie die folgende Abhängigkeit in Ihre `pom.xml` ein:
 Fügen Sie die folgende Zeile in Ihre `build.gradle` ein:
 
 ```groovy
-            repositories {
-			    mavenCentral()
-			    maven { url 'https://jitpack.io' }
-		    }
+           	repositories {
+			mavenCentral()
+			maven { url 'https://jitpack.io' }
+		}
 
 	        implementation 'com.github.xjanx05:PhoenixBase:Tag'
 ```
