@@ -52,7 +52,7 @@ public class InsertRequest extends DatabaseRequest {
     }
 
     @Override
-    public void execute(Connection connection) throws SQLException {
+    public String generateSQLString() {
         Checks.checkIfNullOrEmptyMap(entries, "entries");
         Checks.checkIfNullOrEmptyMap(table, "tablename");
 
@@ -86,8 +86,8 @@ public class InsertRequest extends DatabaseRequest {
         if (Checks.DEBUG)
             System.out.println("Executing: " + sql);
 
-        PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
-        preparedStatement.execute();
+        return sql.toString();
+
     }
 
     /**

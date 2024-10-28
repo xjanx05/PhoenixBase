@@ -145,7 +145,7 @@ public class SelectRequest extends DatabaseRequest {
     }
 
     @Override
-    public void execute(Connection connection) throws SQLException {
+    public String generateSQLString() {
         Checks.checkIfNullOrEmptyMap(databaseAction, "action");
         Checks.checkIfNullOrEmptyMap(table, "tablename");
         Checks.checkIfNullOrEmptyMap(columKey, "columkey");
@@ -175,9 +175,8 @@ public class SelectRequest extends DatabaseRequest {
         if (Checks.DEBUG)
             System.out.println("Executing: " + sql);
 
-        PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
-        ResultSet resultSet = preparedStatement.executeQuery();
-        databaseAction.databaseAction(resultSet);
+        return sql.toString();
+
     }
 
     /**

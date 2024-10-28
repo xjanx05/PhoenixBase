@@ -4,6 +4,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import de.codingphoenix.phoenixbase.check.Checks;
 import de.codingphoenix.phoenixbase.database.request.DatabaseRequest;
+import de.codingphoenix.phoenixbase.database.request.SelectRequest;
+import de.codingphoenix.phoenixbase.database.request.UpdateRequest;
 import de.codingphoenix.phoenixbase.exception.DriverNotLoadedException;
 import de.codingphoenix.phoenixbase.exception.RequestNotExecutableException;
 import lombok.Getter;
@@ -11,6 +13,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 
@@ -64,7 +68,15 @@ public class DatabaseAdapter {
                     if (Checks.DEBUG)
                         System.out.printf("Executing '%s' async%n", request.getClass().getSimpleName());
                     try (Connection connection = dataSource.getConnection()) {
-                        request.execute(connection);
+                        PreparedStatement preparedStatement = connection.prepareStatement(request.generateSQLString());
+                        if (request instanceof SelectRequest selectRequest) {
+                            ResultSet resultSet = preparedStatement.executeQuery();
+                            selectRequest.databaseAction().databaseAction(resultSet);
+                        } else if (request instanceof UpdateRequest) {
+                            preparedStatement.executeUpdate();
+                        } else {
+                            preparedStatement.execute();
+                        }
                     } catch (Exception e) {
                         throw new RequestNotExecutableException(e);
                     }
@@ -79,10 +91,88 @@ public class DatabaseAdapter {
             if (Checks.DEBUG)
                 System.out.printf("Executing '%s' synced%n", request.getClass().getSimpleName());
             try (Connection connection = dataSource.getConnection()) {
-                request.execute(connection);
-                return;
+                PreparedStatement preparedStatement = connection.prepareStatement(request.generateSQLString());
+                if (request instanceof SelectRequest selectRequest) {
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    selectRequest.databaseAction().databaseAction(resultSet);
+                } else if (request instanceof UpdateRequest) {
+                    preparedStatement.executeUpdate();
+                } else {
+                    preparedStatement.execute();
+                }
             } catch (SQLException e) {
                 throw new RequestNotExecutableException(e);
+            }
+        }
+    }
+
+    public void executeRequestsAddBatch(DatabaseRequest... requests) {
+        if (requests.length == 0) {
+            return;
+        }
+        DatabaseRequest firstRequest = requests[0];
+        if (firstRequest.async()) {
+            CompletableFuture.runAsync(() -> {
+                PreparedStatement preparedStatement = null;
+                for (DatabaseRequest request : requests) {
+                    try {
+                        if (Checks.DEBUG)
+                            System.out.printf("Executing '%s' async%n", request.getClass().getSimpleName());
+
+                        try (Connection connection = dataSource.getConnection()) {
+
+                            if (preparedStatement == null) {
+                                preparedStatement = connection.prepareStatement(request.generateSQLString());
+                                preparedStatement.addBatch();
+                            } else {
+                                preparedStatement.addBatch(request.generateSQLString());
+                            }
+
+                        } catch (Exception e) {
+                            throw new RequestNotExecutableException(e);
+                        }
+                        if (Checks.DEBUG)
+                            System.out.printf("Executed '%s'%n", request.getClass().getSimpleName());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    preparedStatement.executeBatch();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+            return;
+        } else {
+            PreparedStatement preparedStatement = null;
+            for (DatabaseRequest request : requests) {
+                try {
+                    if (Checks.DEBUG)
+                        System.out.printf("Executing '%s' sync%n", request.getClass().getSimpleName());
+
+                    try (Connection connection = dataSource.getConnection()) {
+
+                        if (preparedStatement == null) {
+                            preparedStatement = connection.prepareStatement(request.generateSQLString());
+                            preparedStatement.addBatch();
+                        } else {
+                            preparedStatement.addBatch(request.generateSQLString());
+                        }
+
+                    } catch (Exception e) {
+                        throw new RequestNotExecutableException(e);
+                    }
+                    if (Checks.DEBUG)
+                        System.out.printf("Executed '%s'%n", request.getClass().getSimpleName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                preparedStatement.executeBatch();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }

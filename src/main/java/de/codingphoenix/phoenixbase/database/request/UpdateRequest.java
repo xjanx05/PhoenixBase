@@ -55,7 +55,7 @@ public class UpdateRequest extends DatabaseRequest {
     }
 
     @Override
-    public void execute(Connection connection) throws SQLException {
+    public String generateSQLString() {
         Checks.checkIfNullOrEmptyMap(table, "tablename");
 
 
@@ -90,8 +90,7 @@ public class UpdateRequest extends DatabaseRequest {
         if (Checks.DEBUG)
             System.out.println("Executing: " + sql);
 
-        PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
-        preparedStatement.executeUpdate();
+        return sql.toString();
     }
 
     public enum UpdatePriority {

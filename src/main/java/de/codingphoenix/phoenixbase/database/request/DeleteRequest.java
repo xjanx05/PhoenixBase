@@ -112,7 +112,7 @@ public class DeleteRequest extends DatabaseRequest {
     }
 
     @Override
-    public void execute(Connection connection) throws SQLException {
+    public String generateSQLString(){
         Checks.checkIfNullOrEmptyMap(table, "tablename");
 
         StringBuilder sql = new StringBuilder("DELETE FROM ").append(table);
@@ -131,7 +131,7 @@ public class DeleteRequest extends DatabaseRequest {
         if (Checks.DEBUG)
             System.out.println("Executing: " + sql);
 
-        connection.prepareStatement(sql.toString()).execute();
+        return sql.toString();
     }
 
     /**

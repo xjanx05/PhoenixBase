@@ -24,6 +24,6 @@ public abstract class DatabaseRequest {
      * @param connection The connection to the desired database.
      * @throws SQLException If an error occur while executing the request.
      */
-    public abstract void execute(Connection connection) throws SQLException;
+    public abstract String generateSQLString() throws SQLException;
 
 }

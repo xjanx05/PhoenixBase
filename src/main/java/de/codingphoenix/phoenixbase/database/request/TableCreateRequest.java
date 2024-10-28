@@ -42,7 +42,7 @@ public class TableCreateRequest extends DatabaseRequest {
 
 
     @Override
-    public void execute(Connection connection) throws SQLException {
+    public String generateSQLString() {
         Checks.checkIfNullOrEmptyMap(table, "tablename");
         Checks.checkIfNullOrEmptyMap(columns, "columns");
         StringBuilder sql = new StringBuilder("CREATE TABLE ");
@@ -67,8 +67,7 @@ public class TableCreateRequest extends DatabaseRequest {
         if (Checks.DEBUG)
             System.out.println("Executing: " + sql);
 
-        PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
-        preparedStatement.execute();
+        return sql.toString();
     }
 
 }

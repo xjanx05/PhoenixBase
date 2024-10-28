@@ -7,7 +7,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
@@ -29,7 +28,7 @@ public class TableAlterRequest extends DatabaseRequest {
     private AlterRequestAction alterRequestAction;
 
     @Override
-    public void execute(Connection connection) throws SQLException {
+    public String generateSQLString()  {
         Checks.checkIfNullOrEmptyMap(table, "tablename");
         Checks.checkIfNullOrEmptyMap(alterRequestAction, "alterRequestAction");
 
@@ -42,6 +41,7 @@ public class TableAlterRequest extends DatabaseRequest {
         if (Checks.DEBUG)
             System.out.println("Executing: " + sql);
 
+        return sql.toString();
     }
 
     /**

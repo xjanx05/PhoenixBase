@@ -16,7 +16,7 @@ public class TableDropRequest extends DatabaseRequest {
     private String table;
 
     @Override
-    public void execute(Connection connection) throws SQLException {
+    public String generateSQLString() {
         Checks.checkIfNullOrEmptyMap(table, "tablename");
 
         StringBuilder sql = new StringBuilder("DROP TABLE").append(table).append(";");
@@ -24,7 +24,6 @@ public class TableDropRequest extends DatabaseRequest {
         if (Checks.DEBUG)
             System.out.println("Executing: " + sql);
 
-        PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
-        preparedStatement.execute();
+        return sql.toString();
     }
 }
