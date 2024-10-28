@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'de.codingphoenix'
-version = '0.1.1-SNAPSHOT'
+version = '0.1.2-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -24,6 +24,7 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
 }
 
+
 test {
     useJUnitPlatform()
 }
@@ -32,4 +33,11 @@ tasks.register('printVersion') {
     doLast {
         println version
     }
+}
+
+jar {
+    from {
+        configurations.runtimeClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 }
