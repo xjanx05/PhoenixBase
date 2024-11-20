@@ -71,7 +71,7 @@ public class DatabaseAdapter {
                         PreparedStatement preparedStatement = connection.prepareStatement(request.generateSQLString());
                         if (request instanceof SelectRequest selectRequest) {
                             ResultSet resultSet = preparedStatement.executeQuery();
-                            selectRequest.resultSet = resultSet;
+                            selectRequest.resultSet(resultSet);
                             if(selectRequest.databaseAction() != null){
                                 selectRequest.databaseAction().databaseAction(resultSet);
                             }
@@ -97,7 +97,7 @@ public class DatabaseAdapter {
                 PreparedStatement preparedStatement = connection.prepareStatement(request.generateSQLString());
                 if (request instanceof SelectRequest selectRequest) {
                     ResultSet resultSet = preparedStatement.executeQuery();
-                    selectRequest.resultSet = resultSet;
+                    selectRequest.resultSet(resultSet);
                     if(selectRequest.databaseAction() != null){
                         selectRequest.databaseAction().databaseAction(resultSet);
                     }
