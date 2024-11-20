@@ -19,6 +19,13 @@ public class DatabaseEntry {
     }
 
     public String sqlValue() {
+        if(value != null && value instanceof Boolean bool){
+            if(bool){
+                return "'1'";
+            }else {
+                return "'0'";
+            }
+        }
         return "'%s'".formatted(value);
     }
 }
