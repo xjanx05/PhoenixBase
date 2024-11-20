@@ -31,6 +31,9 @@ public class Column {
     public String toString() {
         Checks.checkIfNull(key, "columnkey");
         Checks.checkIfNull(dataType, "datatype");
+        if(dataType.requireObject() ) {
+            Checks.checkIfNull(dataTypeParamenterObject, "dataTypeParamenterObject");
+        }
         StringBuilder column = new StringBuilder(key).append(" ").append(dataType.toSQL(dataTypeParamenterObject));
 
         if (notNull) {
