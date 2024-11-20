@@ -36,6 +36,12 @@ public class SelectRequest extends DatabaseRequest {
     private DatabaseAction databaseAction;
 
     /**
+     * The ResultSet will be stored here after the request is executed.
+     */
+    @Setter
+    private ResultSet resultSet;
+
+    /**
      * The function for the select request. E.g. the amount of rows that will match the conditions.
      */
     @Setter
@@ -146,7 +152,6 @@ public class SelectRequest extends DatabaseRequest {
 
     @Override
     public String generateSQLString() {
-        Checks.checkIfNullOrEmptyMap(databaseAction, "action");
         Checks.checkIfNullOrEmptyMap(table, "tablename");
         Checks.checkIfNullOrEmptyMap(columKey, "columkey");
 
