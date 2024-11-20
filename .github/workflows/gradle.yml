@@ -46,13 +46,14 @@ jobs:
       run: |
         VERSION=$(./gradlew -q printVersion)
         echo "version=$VERSION" >> $GITHUB_OUTPUT
+        
     - name: Check Existing Releases
       id: check_release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
           existing_release=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-            "https://api.github.com/repos/${{ github.repository }}/releases/tags/v${{ env.version }}")
+            "https://api.github.com/repos/${{ github.repository }}/releases/tags/v${{ steps.get_version.outputs.version }}")
           echo "existing_release=$existing_release" >> $GITHUB_ENV
           if echo "$existing_release" | jq -e '.draft == true' > /dev/null; then
             echo "draft_exists=true" >> $GITHUB_ENV
