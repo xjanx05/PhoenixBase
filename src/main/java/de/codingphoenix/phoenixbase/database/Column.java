@@ -48,7 +48,7 @@ public class Column {
         }
 
         if (defaultValue != null) {
-            column.append(" DEFAULT ").append(defaultValue.toString());
+            column.append(" DEFAULT ").append(defaultValue);
 
         }
 
@@ -56,7 +56,7 @@ public class Column {
     }
 
     public enum ColumnType {
-        PRIMARY_KEY, PRIMARY_KEY_AUTOINCREMENT, UNIQUE;
+        PRIMARY_KEY, PRIMARY_KEY_AUTOINCREMENT, UNIQUE
     }
 
 

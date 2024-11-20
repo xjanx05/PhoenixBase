@@ -7,9 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +36,9 @@ public class InsertRequest extends DatabaseRequest {
 
     /**
      * Adds an entry which will be written to the Database.
+     *
      * @param column Name of the column
-     * @param value Value that will be inserted
+     * @param value  Value that will be inserted
      * @return {@link InsertRequest} for chaining.
      */
     public InsertRequest entry(String column, Object value) {
@@ -92,6 +90,7 @@ public class InsertRequest extends DatabaseRequest {
 
     /**
      * Generates the sql string for insert with duplicated key for executing
+     *
      * @return the sql string
      */
     private StringBuilder generateOnDuplicateString() {

@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
- Action for the {@link TableAlterRequest} that will add a column.
+ * Action for the {@link TableAlterRequest} that will add a column.
  */
 @Setter
 @Getter

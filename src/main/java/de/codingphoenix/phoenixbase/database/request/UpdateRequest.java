@@ -8,9 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -94,7 +91,7 @@ public class UpdateRequest extends DatabaseRequest {
     }
 
     public enum UpdatePriority {
-        LOW, NORMAL;
+        LOW, NORMAL
     }
 
     private String parseCondition() {

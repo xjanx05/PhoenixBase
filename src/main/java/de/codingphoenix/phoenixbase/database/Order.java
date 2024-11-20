@@ -13,7 +13,6 @@ public class Order {
     private HashMap<String, Direction> orderRules;
 
     /**
-     *
      * @param key
      * @param direction
      * @return

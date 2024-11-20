@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 /**
  * A {@link DatabaseRequest} that will modify the table or its columns.
  */
@@ -28,7 +25,7 @@ public class TableAlterRequest extends DatabaseRequest {
     private AlterRequestAction alterRequestAction;
 
     @Override
-    public String generateSQLString()  {
+    public String generateSQLString() {
         Checks.checkIfNullOrEmptyMap(table, "tablename");
         Checks.checkIfNullOrEmptyMap(alterRequestAction, "alterRequestAction");
 

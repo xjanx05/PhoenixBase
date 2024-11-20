@@ -73,7 +73,7 @@ public class DatabaseAdapter {
                         if (request instanceof SelectRequest selectRequest) {
                             ResultSet resultSet = preparedStatement.executeQuery();
                             selectRequest.resultSet(resultSet);
-                            if(selectRequest.databaseAction() != null){
+                            if (selectRequest.databaseAction() != null) {
                                 selectRequest.databaseAction().databaseAction(resultSet);
                             }
                         } else if (request instanceof UpdateRequest) {
@@ -91,7 +91,6 @@ public class DatabaseAdapter {
                     e.printStackTrace();
                 }
             });
-            return;
         } else {
             if (Checks.DEBUG)
                 System.out.printf("Executing '%s' synced%n", request.getClass().getSimpleName());
@@ -100,7 +99,7 @@ public class DatabaseAdapter {
                 if (request instanceof SelectRequest selectRequest) {
                     ResultSet resultSet = preparedStatement.executeQuery();
                     selectRequest.resultSet(resultSet);
-                    if(selectRequest.databaseAction() != null){
+                    if (selectRequest.databaseAction() != null) {
                         selectRequest.databaseAction().databaseAction(resultSet);
                     }
                 } else if (request instanceof UpdateRequest) {
@@ -154,7 +153,6 @@ public class DatabaseAdapter {
                     e.printStackTrace();
                 }
             });
-            return;
         } else {
             PreparedStatement preparedStatement = null;
             for (DatabaseRequest request : requests) {

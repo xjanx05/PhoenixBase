@@ -9,10 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,7 +33,7 @@ public class SelectRequest extends DatabaseRequest {
     private DatabaseAction databaseAction;
 
     /**
-     * The ResultSet will be stored here after the request is executed. 
+     * The ResultSet will be stored here after the request is executed.
      */
     @Setter
     private ResultSet resultSet;
@@ -139,6 +136,7 @@ public class SelectRequest extends DatabaseRequest {
 
     /**
      * Adds a key for the values that you want from the table
+     *
      * @param columKey The key of the column
      * @return {@link SelectRequest} for chaining.
      */

@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
- Action for the {@link TableAlterRequest} that will drop a table.
+ * Action for the {@link TableAlterRequest} that will drop a table.
  */
 @Setter
 @Getter

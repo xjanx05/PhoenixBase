@@ -5,10 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 @Getter
 @Accessors(fluent = true)
 public class TableDropRequest extends DatabaseRequest {

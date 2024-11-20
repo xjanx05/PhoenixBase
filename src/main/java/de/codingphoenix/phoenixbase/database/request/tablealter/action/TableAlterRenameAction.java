@@ -8,14 +8,14 @@ import lombok.experimental.Accessors;
 
 
 /**
- Action for the {@link TableAlterRequest} that will rename a table.
+ * Action for the {@link TableAlterRequest} that will rename a table.
  */
 @Setter
 @Getter
 @Accessors(fluent = true)
 public class TableAlterRenameAction implements TableAlterRequest.AlterRequestAction {
     /**
-     The new name for the table
+     * The new name for the table
      */
     private String newTableName;
 

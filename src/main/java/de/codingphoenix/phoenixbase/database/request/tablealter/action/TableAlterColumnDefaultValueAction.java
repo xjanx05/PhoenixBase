@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
- Action for the {@link TableAlterRequest} that will set a default value for a column.
+ * Action for the {@link TableAlterRequest} that will set a default value for a column.
  */
 @Setter
 @Getter
@@ -32,13 +32,12 @@ public class TableAlterColumnDefaultValueAction implements TableAlterRequest.Alt
     }
 
 
-
     /**
-     The action will add a default value.
+     * The action will add a default value.
      */
     public static final int ADD_ACTION = 1;
     /**
-     The action will remove the default value.
+     * The action will remove the default value.
      */
     public static final int DROP_ACTION = 2;
 

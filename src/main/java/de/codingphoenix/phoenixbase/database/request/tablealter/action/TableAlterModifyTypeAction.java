@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
- Action for the {@link TableAlterRequest} that will modify a Type action.
+ * Action for the {@link TableAlterRequest} that will modify a Type action.
  */
 @Setter
 @Getter

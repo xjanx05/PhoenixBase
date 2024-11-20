@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -112,7 +110,7 @@ public class DeleteRequest extends DatabaseRequest {
     }
 
     @Override
-    public String generateSQLString(){
+    public String generateSQLString() {
         Checks.checkIfNullOrEmptyMap(table, "tablename");
 
         StringBuilder sql = new StringBuilder("DELETE FROM ").append(table);
