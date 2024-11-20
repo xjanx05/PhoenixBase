@@ -62,6 +62,7 @@ public class DatabaseAdapter {
 
 
     public void executeRequest(DatabaseRequest request) {
+        request.finished(false);
         if (request.async()) {
             CompletableFuture.runAsync(() -> {
                 try {
@@ -80,6 +81,7 @@ public class DatabaseAdapter {
                         } else {
                             preparedStatement.execute();
                         }
+                        request.finished(true);
                     } catch (Exception e) {
                         throw new RequestNotExecutableException(e);
                     }
@@ -106,6 +108,7 @@ public class DatabaseAdapter {
                 } else {
                     preparedStatement.execute();
                 }
+                request.finished(true);
             } catch (SQLException e) {
                 throw new RequestNotExecutableException(e);
             }
@@ -116,6 +119,8 @@ public class DatabaseAdapter {
         if (requests.length == 0) {
             return;
         }
+        //TODO: 
+
         DatabaseRequest firstRequest = requests[0];
         if (firstRequest.async()) {
             CompletableFuture.runAsync(() -> {

@@ -36,7 +36,7 @@ public class SelectRequest extends DatabaseRequest {
     private DatabaseAction databaseAction;
 
     /**
-     * The ResultSet will be stored here after the request is executed.
+     * The ResultSet will be stored here after the request is executed. 
      */
     @Setter
     private ResultSet resultSet;

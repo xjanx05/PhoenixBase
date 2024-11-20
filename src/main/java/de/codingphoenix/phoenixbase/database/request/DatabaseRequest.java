@@ -20,6 +20,11 @@ public abstract class DatabaseRequest {
     private boolean async = false;
 
     /**
+     * Gets the status of the current request.    
+     */
+    private boolean finished = false;
+
+    /**
      * The methode for executing the request.
      * @param connection The connection to the desired database.
      * @throws SQLException If an error occur while executing the request.
