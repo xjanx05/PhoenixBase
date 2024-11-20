@@ -48,7 +48,7 @@ public class Column {
         }
 
         if (defaultValue != null) {
-            column.append(" DEFAULT ").append(defaultValue);
+            column.append(" DEFAULT '").append(defaultValue).append("'");
 
         }
 
