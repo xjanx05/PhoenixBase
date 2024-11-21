@@ -31,7 +31,7 @@ public class Column {
     public String toString() {
         Checks.checkIfNull(key, "columnkey");
         Checks.checkIfNull(dataType, "datatype");
-        if(dataType.requireObject() ) {
+        if (dataType.requireObject()) {
             Checks.checkIfNull(dataTypeParamenterObject, "dataTypeParamenterObject");
         }
         StringBuilder column = new StringBuilder(key).append(" ").append(dataType.toSQL(dataTypeParamenterObject));
@@ -51,7 +51,7 @@ public class Column {
         }
 
         if (defaultValue != null) {
-            column.append(" DEFAULT '").append(defaultValue).append("'");
+            column.append(" DEFAULT '").append((defaultValue instanceof Boolean bool ? (bool ? 1 : 0) : defaultValue)).append("'");
 
         }
 

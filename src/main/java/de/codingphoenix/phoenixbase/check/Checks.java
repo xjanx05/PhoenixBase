@@ -10,7 +10,7 @@ public class Checks {
      * Enables more debug messages.
      */
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
 
     /**
