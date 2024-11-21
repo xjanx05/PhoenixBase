@@ -180,7 +180,7 @@ public class DatabaseAdapter {
             }
             try {
                 preparedStatement.executeBatch();
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
