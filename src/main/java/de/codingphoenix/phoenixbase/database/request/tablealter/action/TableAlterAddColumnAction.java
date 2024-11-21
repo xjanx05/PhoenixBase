@@ -30,6 +30,10 @@ public class TableAlterAddColumnAction implements TableAlterRequest.AlterRequest
      * If {@link Postion} is set to {@linkplain Postion.AFTER} the name of the column the new will be added after.
      */
     private String afterColumnName;
+    /**
+     * Sets if the action should be "ignored" when the column already exits.
+     */
+    private boolean ifNotExists = false;
 
     @Override
     public StringBuilder generateSQL() {
@@ -37,7 +41,7 @@ public class TableAlterAddColumnAction implements TableAlterRequest.AlterRequest
         Checks.checkIfNullOrEmptyMap(dataType, "dataType");
 
 
-        StringBuilder stringBuilder = new StringBuilder("ADD COLUMN ").append(columnName).append(" ").append(dataType);
+        StringBuilder stringBuilder = new StringBuilder("ADD COLUMN ").append((ifNotExists ? "IF NOT EXISTS " : null)).append(columnName).append(" ").append(dataType);
 
         if (postion == Postion.DEFAULT) {
             return stringBuilder;
