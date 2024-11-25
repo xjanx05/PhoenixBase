@@ -2,6 +2,7 @@ package de.codingphoenix.phoenixbase.database.request.tablealter.action;
 
 import de.codingphoenix.phoenixbase.check.Checks;
 import de.codingphoenix.phoenixbase.database.DataType;
+import de.codingphoenix.phoenixbase.database.DatabaseEntry;
 import de.codingphoenix.phoenixbase.database.request.tablealter.TableAlterRequest;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,7 +48,7 @@ public class TableAlterAddColumnAction implements TableAlterRequest.AlterRequest
         Checks.checkIfStringOnlyHasAllowedCharacters(columnName, "columnName");
 
 //TODO: Add default value to column
-        StringBuilder stringBuilder = new StringBuilder("ADD COLUMN ").append((ifNotExists ? "IF NOT EXISTS " : null)).append(columnName).append(" ").append(dataType).append((defaultValue == null ? null : " '" + defaultValue + "'" ));
+        StringBuilder stringBuilder = new StringBuilder("ADD COLUMN ").append((ifNotExists ? "IF NOT EXISTS " : null)).append(columnName).append(" ").append(dataType).append((defaultValue == null ? null : " " + DatabaseEntry.parseSQLValue(defaultValue)));
 
         if (postion == Postion.DEFAULT) {
             return stringBuilder;

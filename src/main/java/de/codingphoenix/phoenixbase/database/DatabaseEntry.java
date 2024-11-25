@@ -19,12 +19,19 @@ public class DatabaseEntry {
     }
 
     public String sqlValue() {
-        if(value != null && value instanceof Boolean bool){
-            if(bool){
+        return parseSQLValue(value);
+    }
+
+    public static String parseSQLValue(Object value) {
+        if (value != null && value instanceof Boolean bool) {
+            if (bool) {
                 return "'1'";
-            }else {
+            } else {
                 return "'0'";
             }
+        }
+        if (value != null && value instanceof Number number) {
+            return number.toString();
         }
         return "'%s'".formatted(value);
     }
