@@ -32,7 +32,7 @@ public class Checks {
      * @param name   Name of the object for the error message
      */
     public static void checkIfStringOnlyHasAllowedCharacters(String input, String name) {
-        if (input != null && input.matches("^[A-Za-z0-9_]+$"))
+        if (input != null && !input.matches("^[A-Za-z0-9_]+$"))
             throw new IllegalArgumentException("Object '" + name + "' has forbidden characters.");
     }
 
