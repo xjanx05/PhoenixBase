@@ -35,7 +35,7 @@ public class TableAlterAddColumnAction implements TableAlterRequest.AlterRequest
     /**
      * The default value of the column.
      */
-    private String defaultValue;
+    private Object defaultValue;
     /**
      * Sets if the action should be "ignored" when the column already exits.
      */
