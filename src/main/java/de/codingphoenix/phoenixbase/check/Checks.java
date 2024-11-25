@@ -25,6 +25,30 @@ public class Checks {
     }
 
     /**
+     * Checks if string only has allowed characters
+     * Default Regex: A-Z; a-z; 0-9; _
+     *
+     * @param input Object that will be checked
+     * @param name   Name of the object for the error message
+     */
+    public static void checkIfStringOnlyHasAllowedCharacters(String input, String name) {
+        if (input != null && input.matches("^[A-Za-z0-9_]+$"))
+            throw new IllegalArgumentException("Object '" + name + "' has forbidden characters.");
+    }
+
+    /**
+     * Checks if string only has allowed characters
+     *
+     * @param input Object that will be checked
+     * @param regex The regex for the check.
+     * @param name   Name of the object for the error message
+     */
+    public static void checkIfStringOnlyHasAllowedCharacters(String input, String regex, String name) {
+        if (input != null && input.matches(regex))
+            throw new IllegalArgumentException("Object '" + name + "' has forbidden characters.");
+    }
+
+    /**
      * Checks if object has spaces
      *
      * @param object Object that will be checked
