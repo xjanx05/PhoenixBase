@@ -118,6 +118,11 @@ public class DatabaseAdapter {
         if (requests.length == 0) {
             return;
         }
+        if(requests.length == 1) {
+            System.out.println("Since batch cannot be executed with only one object. The request will be executed as a normal request.");
+            executeRequest(requests[0]);
+            return;
+        }
         //TODO: 
 
         DatabaseRequest firstRequest = requests[0];

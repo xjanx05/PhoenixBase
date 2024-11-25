@@ -41,7 +41,7 @@ public class TableAlterAddColumnAction implements TableAlterRequest.AlterRequest
         Checks.checkIfNullOrEmptyMap(dataType, "dataType");
 
 //TODO: Add default value to column
-        StringBuilder stringBuilder = new StringBuilder("ADD COLUMN ").append((ifNotExists ? "IF NOT EXISTS " : null)).append(columnName).append(" ").append(dataType);
+        StringBuilder stringBuilder = new StringBuilder("ADD COLUMN ").append((ifNotExists ? "IF NOT EXISTS " : null)).append("'").append(columnName).append("'").append(" ").append(dataType);
 
         if (postion == Postion.DEFAULT) {
             return stringBuilder;
