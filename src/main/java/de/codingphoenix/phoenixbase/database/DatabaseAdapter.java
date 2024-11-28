@@ -12,10 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.concurrent.CompletableFuture;
 
 public class DatabaseAdapter {
@@ -118,34 +115,46 @@ public class DatabaseAdapter {
         if (requests.length == 0) {
             return;
         }
-        if(requests.length == 1) {
+        if (requests.length == 1) {
             System.out.println("Since batch cannot be executed with only one object. The request will be executed as a normal request.");
             executeRequest(requests[0]);
             return;
         }
-        //TODO: 
 
-        DatabaseRequest firstRequest = requests[0];
-        if (firstRequest.async()) {
+        if (requests[0].async()) {
             CompletableFuture.runAsync(() -> {
-                PreparedStatement preparedStatement = null;
+                try (Connection connection = dataSource.getConnection()) {
+                    Statement statement = connection.createStatement();
+
+                    for (DatabaseRequest request : requests) {
+                        try {
+                            if (Checks.DEBUG)
+                                System.out.printf("Executing '%s' async%n", request.getClass().getSimpleName());
+                            statement.addBatch(request.generateSQLString());
+                            if (Checks.DEBUG)
+                                System.out.printf("Executed '%s'%n", request.getClass().getSimpleName());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    try {
+                        statement.executeBatch();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    throw new RequestNotExecutableException(e);
+                }
+            });
+        } else {
+            try (Connection connection = dataSource.getConnection()) {
+                Statement statement = connection.createStatement();
+
                 for (DatabaseRequest request : requests) {
                     try {
                         if (Checks.DEBUG)
                             System.out.printf("Executing '%s' async%n", request.getClass().getSimpleName());
-
-                        try (Connection connection = dataSource.getConnection()) {
-
-                            if (preparedStatement == null) {
-                                preparedStatement = connection.prepareStatement(request.generateSQLString());
-                                preparedStatement.addBatch();
-                            } else {
-                                preparedStatement.addBatch(request.generateSQLString());
-                            }
-
-                        } catch (Exception e) {
-                            throw new RequestNotExecutableException(e);
-                        }
+                        statement.addBatch(request.generateSQLString());
                         if (Checks.DEBUG)
                             System.out.printf("Executed '%s'%n", request.getClass().getSimpleName());
                     } catch (Exception e) {
@@ -153,40 +162,12 @@ public class DatabaseAdapter {
                     }
                 }
                 try {
-                    preparedStatement.executeBatch();
+                    statement.executeBatch();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-            });
-        } else {
-            PreparedStatement preparedStatement = null;
-            for (DatabaseRequest request : requests) {
-                try {
-                    if (Checks.DEBUG)
-                        System.out.printf("Executing '%s' sync%n", request.getClass().getSimpleName());
-
-                    try (Connection connection = dataSource.getConnection()) {
-
-                        if (preparedStatement == null) {
-                            preparedStatement = connection.prepareStatement(request.generateSQLString());
-                            preparedStatement.addBatch();
-                        } else {
-                            preparedStatement.addBatch(request.generateSQLString());
-                        }
-
-                    } catch (Exception e) {
-                        throw new RequestNotExecutableException(e);
-                    }
-                    if (Checks.DEBUG)
-                        System.out.printf("Executed '%s'%n", request.getClass().getSimpleName());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            try {
-                preparedStatement.executeBatch();
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new RequestNotExecutableException(e);
             }
         }
     }
